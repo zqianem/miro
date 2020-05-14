@@ -112,11 +112,12 @@ module Miro
     end
 
     def image_magick_params
-      if Miro.histogram?
-        "':in[0]' -resize :resolution -colors :colors -colorspace :quantize -quantize :quantize -alpha remove -format %c histogram:info:"
-      else
-        "':in[0]' -resize :resolution -colors :colors -colorspace :quantize -quantize :quantize :out"
-      end
+      ":in -resize :resolution -colors :colors -colorspace :quantize -quantize :quantize " +
+        if Miro.histogram?
+          "-alpha remove -format %c histogram:info:"
+        else
+          ":out"
+        end
     end
 
     def group_pixels_by_color
